@@ -1,4 +1,4 @@
-#Graph with Dictionary in format of ['Node', Weightage']
+#Graph with Dictionary in format of ['Node', Weightage]
 nodes = {
          'A': [['B', 6], ['F', 3]],
          'B': [['A', 6], ['C', 3], ['D', 2]],
@@ -11,6 +11,7 @@ nodes = {
          'I': [['G', 3], ['H', 2], ['E', 5], ['J', 3]],
          'J': [['E', 5], ['I', 3]]
         }
+
 # Heuristics for each node
 h = {
      'A' : 10,
@@ -26,15 +27,15 @@ h = {
     }
 
 def astar(start, goal):
-    open = []     
-    closed = []   
-    visited = set()        
-    open.append([start, h[start]])
-    while open :
-        min = 1000
-        val = ''
-        for i in open:
-            if i[1] < min:
+    opened = []                              #To store paths that are not complete i.e. Goal isn't reached
+    closed = []                              #To store paths that are complete i.i. Goal is reached 
+    visited = set()                          #To store nodes that are already visited
+    opened.append([start, h[start]])         #Initialize start node
+    while opened :                           #To check paths that are not complete
+        min = 1000                           #Can be any number that is much greater than the ones in Graph to find the minimum length
+        val = ''                             #To store the current traversing path
+        for i in opened:                       
+            if i[1] < min:                   #To find the path with the lowest weight/length
                 min = i[1]
                 val = i[0]
         closed.append(val)
@@ -42,17 +43,17 @@ def astar(start, goal):
         if goal not in closed:
             for i in nodes[val]:
                 if i[0] not in visited:
-                    open.append([i[0], (min-h[val]+i[1]+h[i[0]])])      #Adds previous weight and the current heuristics and weight of the node
+                    opened.append([i[0], (min-h[val]+i[1]+h[i[0]])])      #Adds previous weight and the current heuristics and weight of the node
         else:
             break
-        open.remove([val, min])
+        opened.remove([val, min])
 
-    closed = closed[::-1]
+    closed = closed[::-1]                    
     min = 1000
-    for i in open:
+    for i in opened:                         #To get the minimum weight of the paths
         if i[1] < min:
             min = i[1]
-
+                  
     lens = len(closed)
     i = 0
     while i < lens-1:
@@ -64,7 +65,7 @@ def astar(start, goal):
             lens-=1
         i+=1
     closed = closed[::-1]
-    return closed, min
+    return closed, min                       #Returns shortest path and the weight corresponding to it
 
 # Start - 'A', Goal = 'J'
 print(astar('A', 'J'))
