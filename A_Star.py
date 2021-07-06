@@ -1,3 +1,4 @@
+#Graph with Dictionary in format of ['Node', Weightage']
 nodes = {
          'A': [['B', 6], ['F', 3]],
          'B': [['A', 6], ['C', 3], ['D', 2]],
@@ -10,6 +11,7 @@ nodes = {
          'I': [['G', 3], ['H', 2], ['E', 5], ['J', 3]],
          'J': [['E', 5], ['I', 3]]
         }
+# Heuristics for each node
 h = {
      'A' : 10,
      'B' : 8,
@@ -24,9 +26,9 @@ h = {
     }
 
 def astar(start, goal):
-    open = []
-    closed = []
-    visited = set()
+    open = []     
+    closed = []   
+    visited = set()        
     open.append([start, h[start]])
     while open :
         min = 1000
@@ -40,7 +42,7 @@ def astar(start, goal):
         if goal not in closed:
             for i in nodes[val]:
                 if i[0] not in visited:
-                    open.append([i[0], (min-h[val]+i[1]+h[i[0]])])
+                    open.append([i[0], (min-h[val]+i[1]+h[i[0]])])      #Adds previous weight and the current heuristics and weight of the node
         else:
             break
         open.remove([val, min])
@@ -64,6 +66,5 @@ def astar(start, goal):
     closed = closed[::-1]
     return closed, min
 
-print(astar('A', 'J'))
-
 # Start - 'A', Goal = 'J'
+print(astar('A', 'J'))
